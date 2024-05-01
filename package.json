@@ -7,7 +7,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "deploy": "gh-pages --dotfiles -d .output/public"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@nuxt/image": "^1.6.0",
     "@nuxtjs/device": "^3.1.1",
-    "@types/bootstrap": "^5.2.10"
+    "@types/bootstrap": "^5.2.10",
+    "gh-pages": "^6.1.1"
   }
 }

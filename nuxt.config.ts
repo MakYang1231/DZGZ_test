@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   app: {
     //pageTransition: { name: 'page', mode: 'out-in' },
-    //baseURL: process.env.NODE_ENV === 'production' ? '/zaiye_web/' : '/',
+    baseURL: process.env.NODE_ENV === 'production' ? '/DZGZ_web/' : '/',
     //baseURL: process.env.NODE_ENV === 'production' ? '/' : '/',
     buildAssetsDir: '/static/',
     head: {
