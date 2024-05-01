@@ -103,7 +103,7 @@
 
     // 檢查url路徑 --- start
     let url_corret = ref<boolean>(false);
-    MenuItemsData.forEach((item, index) => {
+    MenuItemsData.forEach((item:any, index:any) => {
         if( item.title === category ) {
             CategoyData = item;
             url_corret.value = true;
