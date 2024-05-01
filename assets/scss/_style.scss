@@ -1,0 +1,26 @@
+/*! style.scss */
+
+/* Document
+   ========================================================================== */
+
+@font-face {
+    /*フォントの名前*/
+    font-family: "ＫＯさきがけ龍爪Ｍ";
+    src: url("/assets/font/kosakigake.woff") format("woff");
+}
+
+html, body {
+    font-size: calc(1rem * 0.9555);
+    font-family: "Noto Sans TC", sans-serif !important;
+    background-color: var(--WEB_main_color);
+}
+
+img {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+}
