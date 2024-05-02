@@ -97,7 +97,12 @@
             break;            
 
     };
-    
+    // console.log(pageData);
+
+    // const compareByPoint(a, b) {
+    //     return a.
+    // }
+
     let CategoyData = ref([]);
 
 
@@ -117,7 +122,6 @@
 
     // const { data, refresh } = await useFetch(`https://isnmk.com/api/${category}`);
     // pageData = toRaw(data.value);
-    console.log(pageData);
 
 
 </script>
