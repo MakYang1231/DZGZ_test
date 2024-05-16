@@ -7,17 +7,17 @@
             <div class="menu_item">
                 <ul class="me-3">
                     <li v-for="(item, index) in MenuItemsData" :key="index" class="mx-3">
-                        <NuxtLink class="d-flex align-items-center position-relative pb-2" :to="{ path:`${item.url.path}`, hash:`${item.url.hash}` }">
+                        <NuxtLink class="d-flex align-items-center position-relative pb-2" :to="`/${item.category_url}`">
                             <div class="text d-flex align-items-center">
-                                ${ item.title }
+                                ${ item.category_name }
                             </div>
                         </NuxtLink>
-                        <div v-if="item.subItem.length > 0">
-                            <div v-for="(sItem, sIndex) in item.subItem" :key="sIndex" class="page_Cat_Sub">
-                                <NuxtLink :to="{ path:`${sItem.sUrl.path }`, hash:`${sItem.sUrl.hash}`}">
-                                    ${ sItem.sTitle }
+                        <div v-if="item.sub_categories">
+                            <div v-for="(sItem, sIndex) in item.sub_categories" :key="sIndex" class="page_Cat_Sub">
+                                <NuxtLink :to="`/${item.category_url}/${sItem.sub_url}`">
+                                    ${ sItem.sub_name }
                                 </NuxtLink>
-                            </div>
+                            </div>  
                         </div>
                     </li>
                 </ul>
@@ -36,15 +36,22 @@
                     ${ sItem.sTitle }
                 </div>
             </div>
+
+            <button @click="sortPoint();">SORT POINT</button>
+            <div class="search-wrapper">
+                <input type="text" v-model="search" placeholder="Search title.."/>
+                    <label>Search title:</label>
+            </div>
+
             <div class="page_itemBody">
                 <ClientOnly> <!-- [?]  -->
                     <ul class="d-flex align-items-baseline justify-content-between flex-wrap">
                         <li class="" v-for="(item, index) in pageData">
                             <NuxtLink class="disabled-link" :to="{ path:`/`, hash:`` }">
-                                <NuxtImg class="lazyload" itemprop="image" :src="`${ item.picture }`" :data-src="`${ item.picture }`" />
+                                <NuxtImg class="lazyload" itemprop="image" :src="`${ item.picture_url }`" :data-src="`${ item.picture_url }`" />
                             </NuxtLink>
                             <div class="title">
-                                ${ item.name } <span v-if="item.spec !== '' && item.spec !== '無'"> : ${ item.spec }</span>
+                                ${ item.item_name } <span v-if="item.spec !== '' && item.spec !== '無'"> : ${ item.spec }</span>
                             </div>
                             <div class="point">
                                 ${ item.point } 菓子點
@@ -59,69 +66,99 @@
 </template>
 
 <script setup lang="ts">
-    const { $MenuItemsData } = useNuxtApp();
-    const MenuItemsData: any = $MenuItemsData;
-
     const router = useRouter().currentRoute.value;
     const category = router.params.category;
+    const { $MenuItemsData } = useNuxtApp();
+    const MenuItemsData: any = $MenuItemsData;
+    console.log(MenuItemsData);
+    // const { menu } = await useFetch(`https://isnmk.com/api/${category}`);
+    // const MenuItemsData = toRaw(menu.value);
+
 
     let pageData: any = ref();
 
+    let sort_pageData = ref([]);
+    let search = ref();
+
 
     // [API]
-    switch(category) {
-        case '好吃零食':
-            const { $foodData } = useNuxtApp();
-            const foodData: any = $foodData;
-            pageData = foodData;
-            break;
-        case '品牌玩具':
-            const { $toyData } = useNuxtApp();
-            const toyData: any = $toyData;
-            pageData = toyData;
-            break;
-        case '盲盒娃娃':
-            const { $dollData } = useNuxtApp();
-            const dollData: any = $dollData;
-            pageData = dollData;
-            break;
-        case '生活用品':
-            const { $supplyData } = useNuxtApp();
-            const supplyData: any = $supplyData;
-            pageData = supplyData;
-            break;
-        case '其他好物':
-            const { $otherData } = useNuxtApp();
-            const otherData: any = $otherData;
-            pageData = otherData;
-            break;            
+    // switch(category) {
+    //     case '好吃零食':
+    //         const { $foodData } = useNuxtApp();
+    //         const foodData: any = $foodData;
+    //         pageData = foodData;
+    //         break;
+    //     case '品牌玩具':
+    //         const { $toyData } = useNuxtApp();
+    //         const toyData: any = $toyData;
+    //         pageData = toyData;
+    //         break;
+    //     case '盲盒娃娃':
+    //         const { $dollData } = useNuxtApp();
+    //         const dollData: any = $dollData;
+    //         pageData = dollData;
+    //         break;
+    //     case '生活用品':
+    //         const { $supplyData } = useNuxtApp();
+    //         const supplyData: any = $supplyData;
+    //         pageData = supplyData;
+    //         break;
+    //     case '其他好物':
+    //         const { $otherData } = useNuxtApp();
+    //         const otherData: any = $otherData;
+    //         pageData = otherData;
+    //         break;            
 
-    };
-    // console.log(pageData);
+    // };
+    //console.log(pageData);
 
-    // const compareByPoint(a, b) {
-    //     return a.
-    // }
+    const { data, refresh } = await useFetch(`https://isnmk.com/api/${category}`);
+    pageData = toRaw(data.value);    
+
+    const compareByPoint = (a:any, b:any) => {
+        if(a.point === '') {
+            a.point = '99999';
+        }
+        if(b.point === '') {
+            b.point = '99999';
+        }        
+        return a.point - b.point;
+    }
+    //pageData = Object.entries(pageData);
+    for(let item:Object in pageData) {
+        sort_pageData.value.push(pageData[item])
+    }
+
+    pageData = sort_pageData;
+    console.log(pageData);
+
+    const sortPoint = () => {
+        pageData.value.sort(compareByPoint);
+        console.log(pageData.value);
+    }
+
+    const myvalf = computed(() => pageData.value.filter(item => {
+        console.log(search.value);
+        return item.name.includes(search.value);
+    }))
+
 
     let CategoyData = ref([]);
 
 
     // 檢查url路徑 --- start
-    let url_corret = ref<boolean>(false);
-    MenuItemsData.forEach((item:any, index:any) => {
-        if( item.title === category ) {
-            CategoyData = item;
-            url_corret.value = true;
-        }
-    });
+    // let url_corret = ref<boolean>(false);
+    // MenuItemsData.forEach((item:any, index:any) => {
+    //     if( item.title === category ) {
+    //         CategoyData = item;
+    //         url_corret.value = true;
+    //     }
+    // });
 
-    if (!url_corret.value) {
-        throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true });
-    }
+    // if (!url_corret.value) {
+    //     throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true });
+    // }
     // end --- 檢查url路徑
-
-    // const { data, refresh } = await useFetch(`https://isnmk.com/api/${category}`);
-    // pageData = toRaw(data.value);
 
 
 </script>

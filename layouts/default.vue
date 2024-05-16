@@ -13,25 +13,27 @@
                 <div class="item_top" ref="DOM_Header_mitem_top">top</div>
                 <div class="item_bottom">
                     <ul class="bottom_ul d-flex align-items-center">
-                        <li class="bottom_li me-4" v-for="(item, index) in MenuItemsData" :key="index">
-                            <NuxtLink class="bottom_a d-flex align-items-center position-relative pb-2" :to="{ path:`${item.url.path}`, hash:`${item.url.hash}` }">
-                                <div class="icon d-flex align-items-center mx-1">
-                                    <NuxtImg class="lazyload" itemprop="image" :src="`${ item.icon }`" :data-src="`${ item.icon }`" :title="`Navbar_icon_${item.title}`" :alt="`Navbar_icon_${item.title}`" />
+                        <ClientOnly>
+                            <li class="bottom_li me-4" v-for="(item, index) in MenuItemsData" :key="index">
+                                <NuxtLink class="bottom_a d-flex align-items-center position-relative pb-2" :to="`/${item.category_url}`">
+                                    <div class="icon d-flex align-items-center mx-1">
+                                        <NuxtImg class="lazyload" itemprop="image" :src="`images/Header/bar/${ item.category_url }.png`" :data-src="`images/Header/bar/${ item.category_url }.png`" :title="`Navbar_icon_${item.category_url}`" :alt="`Navbar_icon_${item.category_url}`" />
+                                    </div>
+                                    <div class="text d-flex align-items-center">
+                                        ${ item.category_name }
+                                    </div>
+                                </NuxtLink>
+                                <div class="subItem">
+                                    <ul>
+                                        <li v-for="(sItem, sIndex) in item.sub_categories" :key="sIndex">
+                                            <NuxtLink :to="`/${item.category_url}/${sItem.sub_url}`" @click="closeMenu();">
+                                                ${ sItem.sub_name }
+                                            </NuxtLink>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="text d-flex align-items-center">
-                                    ${ item.title }
-                                </div>
-                            </NuxtLink>
-                            <div class="subItem">
-                                <ul>
-                                    <li v-for="(sItem, sIndex) in item.subItem" :key="sIndex">
-                                        <NuxtLink :to="{ path:`${sItem.sUrl.path }`, hash:`${sItem.sUrl.hash}`}" @click="closeMenu();">
-                                            ${ sItem.sTitle }
-                                        </NuxtLink>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                            </li>
+                        </ClientOnly>
                     </ul>
                 </div>
             </div>     
@@ -72,36 +74,38 @@
                                 </li>
                             </ul>
                             <ul class="MainNav_menu MainNav_Cat" id="MainNav_menu">
-                                <li v-for="(item, index) in MenuItemsData" :key="index" class="MainNav_Cat_link" :id="`MainNav_Cat_link_${index}`">
-                                    <div v-if="item.subItem.length > 0" :class="`MainNav_Cat_item MainNav_Cat_item_${index}`">
-                                        <div class="MainNav_Cat_Head" :id="`MainNav_Cat_Head_${index}`">
-                                            <NuxtLink :to="{ path:`${item.url.path}`, hash:`${item.url.hash}` }" class="d-flex align-items-center justify-content-center" @click="closeMenu();" type="button">
-                                                <div class="preIcon">
-                                                    <NuxtImg class="lazyload" itemprop="image" :src="`${ item.icon }`" :data-src="`${ item.icon }`" :title="`Menu_icon_${item.title}`" :alt="`Menu_icon_${item.title}`" />
-                                                </div>
-                                                ${ item.title }
-                                            </NuxtLink>
-                                            <BootstrapIcon name="plus-lg" class="icon" type="button" data-bs-toggle="collapse" :data-bs-target="`#MainNav_Cat_Body_${index}`" aria-expanded="false" :aria-controls="`MainNav_Cat_Body_${index}`"/>
-                                        </div>
-                                        <div :id="`MainNav_Cat_Body_${index}`" class="MainNav_Cat_Body collapse" ref="DOM_CollBady" :aria-labelledby="`MainNav_Cat_Head_${index}`" data-bs-parent="#MainNav_menu">
-                                            <div v-for="(sItem, sIndex) in item.subItem" :key="sIndex" class="MainNav_Cat_Sub">
-                                                <NuxtLink :to="{ path:`${sItem.sUrl.path }`, hash:`${sItem.sUrl.hash}`}" @click="closeMenu();">
-                                                    ${ sItem.sTitle }
+                                <ClientOnly>
+                                    <li v-for="(item, index) in MenuItemsData" :key="index" class="MainNav_Cat_link" :id="`MainNav_Cat_link_${index}`">
+                                        <div v-if="item.sub_categories" :class="`MainNav_Cat_item MainNav_Cat_item_${index}`">
+                                            <div class="MainNav_Cat_Head" :id="`MainNav_Cat_Head_${index}`">
+                                                <NuxtLink :to="`/${item.category_url}`" class="d-flex align-items-center justify-content-center" @click="closeMenu();" type="button">
+                                                    <div class="preIcon">
+                                                        <NuxtImg class="lazyload" itemprop="image" :src="`images/Header/bar/${ item.category_url }.png`" :data-src="`images/Header/bar/${ item.category_url }.png`" :title="`Menu_icon_${item.category_url}`" :alt="`Menu_icon_${item.category_url}`" />
+                                                    </div>
+                                                    ${ item.category_name }
                                                 </NuxtLink>
+                                                <BootstrapIcon name="plus-lg" class="icon" type="button" data-bs-toggle="collapse" :data-bs-target="`#MainNav_Cat_Body_${index}`" aria-expanded="false" :aria-controls="`MainNav_Cat_Body_${index}`"/>
+                                            </div>
+                                            <div :id="`MainNav_Cat_Body_${index}`" class="MainNav_Cat_Body collapse" ref="DOM_CollBady" :aria-labelledby="`MainNav_Cat_Head_${index}`" data-bs-parent="#MainNav_menu">
+                                                <div v-for="(sItem, sIndex) in item.sub_categories" :key="sIndex" class="MainNav_Cat_Sub">
+                                                    <NuxtLink :to="`/${item.category_url}/${sItem.sub_url}`" @click="closeMenu();">
+                                                        ${ sItem.sub_name }
+                                                    </NuxtLink>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div v-else :class="`MainNav_Cat_item MainNav_Cat_item_${index}`">
-                                        <div class="MainNav_Cat_Head" :id="`MainNav_Cat_Head_${index}`">
-                                            <NuxtLink :to="{ path:`${item.url.path}`, hash:`${item.url.hash}` }" class="d-flex align-items-center justify-content-center" @click="closeMenu();" type="button">
-                                                <div class="preIcon">
-                                                    <NuxtImg class="lazyload" itemprop="image" :src="`${ item.icon }`" :data-src="`${ item.icon }`" :title="`Menu_icon_${item.title}`" :alt="`Menu_icon_${item.title}`" />
-                                                </div>
-                                                ${ item.title }
-                                            </NuxtLink>
-                                        </div>        
-                                    </div>   
-                                </li>                                                                                         
+                                        <div v-else :class="`MainNav_Cat_item MainNav_Cat_item_${index}`">
+                                            <div class="MainNav_Cat_Head" :id="`MainNav_Cat_Head_${index}`">
+                                                <NuxtLink :to="`/${item.category_url}`" class="d-flex align-items-center justify-content-center" @click="closeMenu();" type="button">
+                                                    <div class="preIcon">
+                                                        <NuxtImg class="lazyload" itemprop="image" :src="`images/Header/bar/${ item.category_url }.png`" :data-src="`images/Header/bar/${ item.category_url }.png`" :title="`Menu_icon_${item.category_url}`" :alt="`Menu_icon_${item.category_url}`" />
+                                                    </div>
+                                                    ${ item.category_name }
+                                                </NuxtLink>
+                                            </div>        
+                                        </div>   
+                                    </li>     
+                                </ClientOnly>                                                                                    
                             </ul>
                         </div>
                     </div>
@@ -173,6 +177,10 @@ const closeMenu = () => {
 
 const { $MenuItemsData } = useNuxtApp();
 const MenuItemsData: any = $MenuItemsData;
+
+    const { data, refresh } = await useFetch(`https://isnmk.com/api/categories`);
+    //pageData = toRaw(data.value);
+    console.log(toRaw(data.value));
 
 
 </script>
