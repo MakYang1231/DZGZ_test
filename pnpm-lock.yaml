@@ -11,6 +11,9 @@ dependencies:
   nuxt:
     specifier: ^3.11.2
     version: 3.11.2(@unocss/reset@0.59.4)(floating-vue@5.2.2)(sass@1.75.0)(unocss@0.59.4)(vite@5.2.10)
+  nuxt-app:
+    specifier: 'link:'
+    version: 'link:'
   nuxt-bootstrap-icons:
     specifier: ^2.0.0
     version: 2.0.0(nuxt@3.11.2)(vite@5.2.10)(vue@3.4.26)

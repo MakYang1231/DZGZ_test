@@ -8,23 +8,20 @@
 
 export default defineNuxtPlugin(nuxtApp => {  
 
-    const { data:food } = useFetch(`https://isnmk.com/api/food`);
-    const foodData:any = toRaw(food.value);
-    const { data:toy } = useFetch(`https://isnmk.com/api/toy`);
-    const toyData:any = toRaw(toy.value);
-    const { data:doll } = useFetch(`https://isnmk.com/api/doll`);
-    const dollData:any = toRaw(doll.value);
-    const { data:supply } = useFetch(`https://isnmk.com/api/supply`);
-    const supplyData:any = toRaw(supply.value);
-    const { data:other } = useFetch(`https://isnmk.com/api/other`);
-    const otherData:any = toRaw(other.value);
+    const { data:new_product } = useFetch(`https://isnmk.com/api/new_product`);
+    const new_productData:any = toRaw(new_product.value);
+    const { data:recommended } = useFetch(`https://isnmk.com/api/recommended`);
+    const recommendedData:any = toRaw(recommended.value);
+    const { data:life_supply } = useFetch(`https://isnmk.com/api/life_supply`);
+    const life_supplyData:any = toRaw(life_supply.value);
+    const { data:cartoon } = useFetch(`https://isnmk.com/api/cartoon`);
+    const cartoonData:any = toRaw(cartoon.value);
     return {
       provide: {
-        foodData,
-        toyData,
-        dollData,
-        supplyData,
-        otherData
+        new_productData,
+        recommendedData,
+        life_supplyData,
+        cartoonData
       }
     };
   })

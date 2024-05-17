@@ -13,6 +13,7 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "nuxt": "^3.11.2",
+    "nuxt-app": "link:",
     "nuxt-bootstrap-icons": "^2.0.0",
     "nuxt-swiper": "^1.2.2",
     "sass": "^1.75.0",
