@@ -180,7 +180,7 @@ const MenuItemsData: any = $MenuItemsData;
 
     const { data, refresh } = await useFetch(`https://isnmk.com/api/categories`);
     //pageData = toRaw(data.value);
-    console.log(toRaw(data.value));
+    //console.log(toRaw(data.value));
 
 
 </script>

@@ -6,20 +6,22 @@
             </div>
             <div class="menu_item">
                 <ul class="me-3">
-                    <li v-for="(item, index) in MenuItemsData" :key="index" class="mx-3">
-                        <NuxtLink class="d-flex align-items-center position-relative pb-2" :to="`/${item.category_url}`">
-                            <div class="text d-flex align-items-center">
-                                ${ item.category_name }
+                    <ClientOnly>
+                        <li v-for="(item, index) in MenuItemsData" :key="index" class="mx-3">
+                            <NuxtLink class="d-flex align-items-center position-relative pb-2" :to="`/${item.category_url}`">
+                                <div class="text d-flex align-items-center">
+                                    ${ item.category_name }
+                                </div>
+                            </NuxtLink>
+                            <div v-if="item.sub_categories">
+                                <div v-for="(sItem, sIndex) in item.sub_categories" :key="sIndex" class="page_Cat_Sub">
+                                    <NuxtLink :to="`/${item.category_url}/${sItem.sub_url}`">
+                                        ${ sItem.sub_name }
+                                    </NuxtLink>
+                                </div>  
                             </div>
-                        </NuxtLink>
-                        <div v-if="item.sub_categories">
-                            <div v-for="(sItem, sIndex) in item.sub_categories" :key="sIndex" class="page_Cat_Sub">
-                                <NuxtLink :to="`/${item.category_url}/${sItem.sub_url}`">
-                                    ${ sItem.sub_name }
-                                </NuxtLink>
-                            </div>  
-                        </div>
-                    </li>
+                        </li>
+                    </ClientOnly>
                 </ul>
             </div>
         </div>
@@ -28,22 +30,29 @@
                 <BootstrapIcon name="house-door-fill" class="icon" />
                 <BootstrapIcon name="chevron-double-right" class="icon mx-2" />
                 <NuxtLink :to="{ path:`/${ category }`, hash:``}">
-                    ${ category }
+                    <div ref="DOM_ch_category"></div>
                 </NuxtLink>
             </div>
-            <div class="page_subItem d-flex align-items-center justify-content-between">
-                <div class="subItem_text" v-for="(sItem, sIndex) in CategoyData.subItem" :key="sIndex">
-                    ${ sItem.sTitle }
+            <div class="page_subItem d-flex align-items-center justify-content-between flex-wrap">
+                <div class="subItem_text bg-light col-4 col-md-3" v-for="(sItem, sIndex) in sub_CategoryData" :key="sIndex">
+                    <NuxtLink :to="`/${ category }/${ sItem.sub_url }`">
+                        ${ sItem.sub_name }
+                    </NuxtLink>
                 </div>
             </div>
 
-            <button @click="sortPoint();">SORT POINT</button>
-            <div class="search-wrapper">
-                <input type="text" v-model="search" placeholder="Search title.."/>
-                    <label>Search title:</label>
+            <div class="d-flex align-items-center justify-content-start control_bar">
+                <div class="control_label">篩選</div>
+                <div class="control_options">
+                    <button :class="{ active: activeButton === 'complex' }" @click="setActiveButton('complex'); sort_Complex();">綜合排名</button>
+                    <button :class="{ active: activeButton === 'time' }" @click="setActiveButton('time'); sort_Time();">最新</button>
+                    <button :class="{ active: activeButton === 'hot' }" @click="setActiveButton('hot'); sort_Hot();">最熱銷</button>
+                    <button :class="{ active: activeButton === 'point_height' }" @click="setActiveButton('point_height'); sort_Point_Height();">點數高</button>
+                    <button :class="{ active: activeButton === 'point_low' }" @click="setActiveButton('point_low'); sort_Point_Low();">點數低</button>
+                </div>
             </div>
 
-            <div class="page_itemBody">
+            <div class="page_itemBody mt-3">
                 <ClientOnly> <!-- [?]  -->
                     <ul class="d-flex align-items-baseline justify-content-between flex-wrap">
                         <li class="" v-for="(item, index) in pageData">
@@ -54,7 +63,7 @@
                                 ${ item.item_name } <span v-if="item.spec !== '' && item.spec !== '無'"> : ${ item.spec }</span>
                             </div>
                             <div class="point">
-                                ${ item.point } 菓子點
+                                ${ formatNumber(item.point) } 菓子點
                             </div>
                             <button class="nutton d-none">點數兌換</button>
                         </li>
@@ -68,17 +77,42 @@
 <script setup lang="ts">
     const router = useRouter().currentRoute.value;
     const category = router.params.category;
+
+    // 宣告 router 資訊, 並匯入 當前 CategoyDate 資訊
+    let url_corret = ref<boolean>(false);
+    let CategoyData = ref([]);
+    let sub_CategoryData = ref([]);
+    const DOM_ch_category = ref(null);
+
     const { $MenuItemsData } = useNuxtApp();
-    const MenuItemsData: any = $MenuItemsData;
-    console.log(MenuItemsData);
-    // const { menu } = await useFetch(`https://isnmk.com/api/${category}`);
-    // const MenuItemsData = toRaw(menu.value);
+    const MenuItemsData: any = ref($MenuItemsData);
 
 
     let pageData: any = ref();
 
     let sort_pageData = ref([]);
+
+    const activeButton = ref('');
     let search = ref();
+
+onMounted(() => {
+    // 檢查url路徑 --- start
+    MenuItemsData.value.forEach((item:any, index:any) => {
+        if( item.category_url === category ) {
+            CategoyData = toRaw(item);
+            console.log(CategoyData);
+            DOM_ch_category.value.textContent = CategoyData.category_name;
+            sub_CategoryData.value = CategoyData.sub_categories;
+            url_corret.value = true;
+        }
+    });   
+
+    if (!url_corret.value) {
+        console.log('Not ===');
+        throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true });
+    }
+    // end --- 檢查url路徑
+});
 
 
     // [API]
@@ -113,9 +147,45 @@
     //console.log(pageData);
 
     const { data, refresh } = await useFetch(`https://isnmk.com/api/${category}`);
-    pageData = toRaw(data.value);    
+    pageData = toRaw(data.value);
 
-    const compareByPoint = (a:any, b:any) => {
+
+
+    const setActiveButton = (button:any) => {
+        activeButton.value = button;
+    };
+
+    const SortByComplex = (a:any, b:any) => {
+        let aComplex = (a.last_30days_sales * a.point);
+        let bComplex = (b.last_30days_sales * b.point);
+
+        aComplex = (aComplex <= 0) ? a.point : aComplex;
+        bComplex = (bComplex <= 0) ? b.point : bComplex;
+
+        return bComplex - aComplex;
+    }     
+    const SortByTime = (a:any, b:any) => {
+        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+    }    
+    const SortByHot = (a:any, b:any) => {
+        if(a.point === '') {
+            a.last_30days_sales = '0';
+        }
+        if(b.point === '') {
+            b.last_30days_sales = '0';
+        }        
+        return b.last_30days_sales - a.last_30days_sales;
+    }
+    const SortByPointHeight = (a:any, b:any) => {
+        if(a.point === '') {
+            a.point = '99999';
+        }
+        if(b.point === '') {
+            b.point = '99999';
+        }        
+        return b.point - a.point;
+    }
+    const SortByPointLow = (a:any, b:any) => {
         if(a.point === '') {
             a.point = '99999';
         }
@@ -130,37 +200,28 @@
     }
 
     pageData = sort_pageData;
-    console.log(pageData);
+    //console.log(pageData);
 
-    const sortPoint = () => {
-        pageData.value.sort(compareByPoint);
-        console.log(pageData.value);
+    const sort_Complex = () => {
+        pageData.value.sort(SortByComplex);
+        //console.log(pageData.value);
+    }    
+    const sort_Time = () => {
+        pageData.value.sort(SortByTime);
+        //console.log(pageData.value);
+    }    
+    const sort_Hot = () => {
+        pageData.value.sort(SortByHot);
+        //console.log(pageData.value);
     }
-
-    const myvalf = computed(() => pageData.value.filter(item => {
-        console.log(search.value);
-        return item.name.includes(search.value);
-    }))
-
-
-    let CategoyData = ref([]);
-
-
-    // 檢查url路徑 --- start
-    // let url_corret = ref<boolean>(false);
-    // MenuItemsData.forEach((item:any, index:any) => {
-    //     if( item.title === category ) {
-    //         CategoyData = item;
-    //         url_corret.value = true;
-    //     }
-    // });
-
-    // if (!url_corret.value) {
-    //     throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true });
-    // }
-    // end --- 檢查url路徑
-
-
+    const sort_Point_Height = () => {
+        pageData.value.sort(SortByPointHeight);
+        //console.log(pageData.value);
+    }
+    const sort_Point_Low = () => {
+        pageData.value.sort(SortByPointLow);
+        //console.log(pageData.value);
+    }
 </script>
 
 <style lang="scss">
@@ -242,7 +303,66 @@
             margin: 10px 10px 10px 0px;
             border-radius: 5px;
             cursor: pointer;
+
+            .subItem_text {
+                margin: 10px 0px;
+                border-radius: 5px;
+                //background-color: var(--WEB_main_color);
+                cursor: pointer;
+
+                a {
+                    padding: 0px 10px;
+                    font-size: 1.1rem;
+                    line-height: 2rem;
+                    color: #666666;
+                }
+            }
+            .subItem_text:hover {
+                background-color: rgba(0,0,0,.03) !important;
+            }
         }
+
+        .control_bar {
+            background-color: rgba(0,0,0,.03);
+            border-radius: 2px;
+            padding: .8125rem 1.25rem;
+
+            .control_label {
+                color: #555;
+                margin: 0 .3125rem 0 0;
+            }
+
+            .control_options {
+                display: flex;
+                gap: .625rem;
+                margin-left: .625rem;
+
+                button {
+                    background-color: #fff;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-sizing: border-box;
+                    cursor: pointer;
+                    min-width: 5.625rem;
+                    outline: 0;
+                    overflow: visible;
+                    padding: 0 .9375rem;
+                    text-transform: capitalize;
+                    border: 0;
+                    border-radius: 2px;
+                    box-shadow: 0 1px 1px 0 rgba(0,0,0,.02);
+                    height: 2.125rem;
+                    line-height: 2.125rem;
+                }
+                .active {
+                    color: #fff;
+                    background-color: #ee4d2d;
+                }
+            }
+        }
+
         .page_itemBody {
             font-family: "Noto Sans TC", sans-serif;
 

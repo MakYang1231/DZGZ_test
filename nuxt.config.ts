@@ -48,5 +48,6 @@ export default defineNuxtConfig({
     '@nuxt/image', 
     '@nuxtjs/device',
     'nuxt-bootstrap-icons',
+    'nuxt-swiper',
   ],
 })

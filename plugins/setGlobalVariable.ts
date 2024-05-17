@@ -6,7 +6,7 @@
  * 
  *  */ 
 
-export default defineNuxtPlugin(nuxtApp => {  
+export default defineNuxtPlugin(async (nuxtApp) => {  
     const { data, refresh } = useFetch(`https://isnmk.com/api/categories`);
     const MenuItemsData = toRaw(data.value);
     return {
