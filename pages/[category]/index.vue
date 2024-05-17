@@ -97,6 +97,7 @@
 
 onMounted(() => {
     // 檢查url路徑 --- start
+    console.log(MenuItemsData.value);
     MenuItemsData.value.forEach((item:any, index:any) => {
         if( item.category_url === category ) {
             CategoyData = toRaw(item);
