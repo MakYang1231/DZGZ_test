@@ -17,7 +17,7 @@
                             <li class="bottom_li me-4" v-for="(item, index) in MenuItemsData" :key="index">
                                 <NuxtLink class="bottom_a d-flex align-items-center position-relative pb-2" :to="`/${item.category_url}`">
                                     <div class="icon d-flex align-items-center mx-1">
-                                        <NuxtImg class="lazyload" itemprop="image" :src="`images/Header/bar/${ item.category_url }.png`" :data-src="`images/Header/bar/${ item.category_url }.png`" :title="`Navbar_icon_${item.category_url}`" :alt="`Navbar_icon_${item.category_url}`" />
+                                        <NuxtImg class="lazyload" itemprop="image" :src="`images/Header/${ item.category_url }.png`" :data-src="`images/Header/${ item.category_url }.png`" :title="`Navbar_icon_${item.category_url}`" :alt="`Navbar_icon_${item.category_url}`" />
                                     </div>
                                     <div class="text d-flex align-items-center">
                                         ${ item.category_name }
@@ -80,7 +80,7 @@
                                             <div class="MainNav_Cat_Head" :id="`MainNav_Cat_Head_${index}`">
                                                 <NuxtLink :to="`/${item.category_url}`" class="d-flex align-items-center justify-content-center" @click="closeMenu();" type="button">
                                                     <div class="preIcon">
-                                                        <NuxtImg class="lazyload" itemprop="image" :src="`images/Header/bar/${ item.category_url }.png`" :data-src="`images/Header/bar/${ item.category_url }.png`" :title="`Menu_icon_${item.category_url}`" :alt="`Menu_icon_${item.category_url}`" />
+                                                        <NuxtImg class="lazyload" itemprop="image" :src="`images/Header/${ item.category_url }.png`" :data-src="`images/Header/${ item.category_url }.png`" :title="`Menu_icon_${item.category_url}`" :alt="`Menu_icon_${item.category_url}`" />
                                                     </div>
                                                     ${ item.category_name }
                                                 </NuxtLink>
@@ -98,7 +98,7 @@
                                             <div class="MainNav_Cat_Head" :id="`MainNav_Cat_Head_${index}`">
                                                 <NuxtLink :to="`/${item.category_url}`" class="d-flex align-items-center justify-content-center" @click="closeMenu();" type="button">
                                                     <div class="preIcon">
-                                                        <NuxtImg class="lazyload" itemprop="image" :src="`images/Header/bar/${ item.category_url }.png`" :data-src="`images/Header/bar/${ item.category_url }.png`" :title="`Menu_icon_${item.category_url}`" :alt="`Menu_icon_${item.category_url}`" />
+                                                        <NuxtImg class="lazyload" itemprop="image" :src="`images/Header/${ item.category_url }.png`" :data-src="`images/Header/${ item.category_url }.png`" :title="`Menu_icon_${item.category_url}`" :alt="`Menu_icon_${item.category_url}`" />
                                                     </div>
                                                     ${ item.category_name }
                                                 </NuxtLink>
