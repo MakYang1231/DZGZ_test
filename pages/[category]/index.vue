@@ -85,6 +85,7 @@
     const DOM_ch_category = ref(null);
 
     const { $MenuItemsData } = useNuxtApp();
+    console.log($MenuItemsData);
     const MenuItemsData: any = ref($MenuItemsData);
 
 
