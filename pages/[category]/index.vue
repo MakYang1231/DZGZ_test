@@ -85,7 +85,7 @@
     const DOM_ch_category = ref(null);
 
     const { $MenuItemsData } = useNuxtApp();
-    //console.log($MenuItemsData);
+    console.log(useNuxtApp());
     const MenuItemsData: any = ref($MenuItemsData);
 
 
@@ -102,7 +102,7 @@ onMounted(() => {
     toRaw(MenuItemsData.value).forEach((item:any, index:any) => {
         if( item.category_url === category ) {
             CategoyData = toRaw(item);
-            console.log(CategoyData);
+            //console.log(CategoyData);
             DOM_ch_category.value.textContent = CategoyData.category_name;
             sub_CategoryData.value = CategoyData.sub_categories;
             url_corret.value = true;
