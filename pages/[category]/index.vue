@@ -85,7 +85,7 @@
     const DOM_ch_category = ref(null);
 
     const { $MenuItemsData } = useNuxtApp();
-    console.log($MenuItemsData);
+    //console.log($MenuItemsData);
     const MenuItemsData: any = ref($MenuItemsData);
 
 
@@ -98,7 +98,7 @@
 
 onMounted(() => {
     // 檢查url路徑 --- start
-    console.log(toRaw(MenuItemsData.value));
+    //console.log(toRaw(MenuItemsData.value));
     toRaw(MenuItemsData.value).forEach((item:any, index:any) => {
         if( item.category_url === category ) {
             CategoyData = toRaw(item);
