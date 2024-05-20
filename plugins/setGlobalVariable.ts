@@ -9,8 +9,8 @@
 export default defineNuxtPlugin(async (nuxtApp) => {  
     const { data, refresh } = useFetch(`https://isnmk.com/api/categories`);
     console.log(data);
-    const MenuItemsData = data.value;
-    console.log(data.value);
+    const MenuItemsData = data;
+    console.log(data);
     console.log(MenuItemsData);
     return {
       provide: {
