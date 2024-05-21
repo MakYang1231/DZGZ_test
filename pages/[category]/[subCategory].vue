@@ -136,16 +136,16 @@ onMounted(() => {
 
     //let categorData = ref([]);
     //pageData = ref(toRaw(pageData.value));
-    show_pageData.value = pageData;
-    if (show_pageData) {
-        show_pageData.value = toRaw(show_pageData.value).filter(item => {
+
+    if (pageData) {
+        pageData = pageData.filter(item => {
             return item.sub_category === sub_CategoryText.value
         });
     }
     else{
         console.log("No data");
     }
-    
+    show_pageData.value = pageData;
     show_pageData.value = group_pageData(show_pageData.value);
 });
 
