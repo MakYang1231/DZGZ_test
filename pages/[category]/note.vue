@@ -55,32 +55,18 @@
             <div class="page_itemBody mt-3">
                 <ClientOnly> <!-- [?]  -->
                     <ul class="d-flex align-items-baseline justify-content-between flex-wrap">
-                        <Swiper
-                            :speed=0
-                            :autoHeight= true
-                            :modules="[SwiperGrid, SwiperPagination]"
-                            :slides-per-view="1"
-                            :slides-per-group="1"
-                            :space-between="50"
-                            :loop="false"
-                            :pagination="{ clickable: true, type: 'bullets', renderBullet: onSwiperRenderBullet }"
-                            @paginationRender="onPaginationRender"
-                        >
-                        <SwiperSlide class="d-flex align-items-baseline justify-content-between flex-wrap" v-for="(group, index) in show_pageData">
-                            <li class="" v-for="(item, index) in group">
-                                <NuxtLink class="disabled-link" :to="{ path:`/`, hash:`` }">
-                                    <NuxtImg class="lazyload" itemprop="image" :src="`${ item.picture_url }`" :data-src="`${ item.picture_url }`" />
-                                </NuxtLink>
-                                <div class="title">
-                                    ${ item.item_name } <span v-if="item.spec !== '' && item.spec !== '無'"> : ${ item.spec }</span>
-                                </div>
-                                <div class="point">
-                                    ${ formatNumber(item.point) } 菓子點
-                                </div>
-                                <button class="nutton d-none">點數兌換</button>
-                            </li>    
-                        </SwiperSlide>
-                        </Swiper>
+                        <li class="" v-for="(item, index) in pageData">
+                            <NuxtLink class="disabled-link" :to="{ path:`/`, hash:`` }">
+                                <NuxtImg class="lazyload" itemprop="image" :src="`${ item.picture_url }`" :data-src="`${ item.picture_url }`" />
+                            </NuxtLink>
+                            <div class="title">
+                                ${ item.item_name } <span v-if="item.spec !== '' && item.spec !== '無'"> : ${ item.spec }</span>
+                            </div>
+                            <div class="point">
+                                ${ formatNumber(item.point) } 菓子點
+                            </div>
+                            <button class="nutton d-none">點數兌換</button>
+                        </li>
                     </ul>
                 </ClientOnly>
             </div>  
@@ -96,6 +82,7 @@
     let url_corret = ref<boolean>(false);
     let CategoyData = ref([]);
     let sub_CategoryData = ref([]);
+    let sub_CategoryText = ref('');
     const DOM_ch_category = ref(null);
 
     const { $MenuItemsData } = useNuxtApp();
@@ -103,20 +90,28 @@
 
 
     let pageData: any = ref();
-    let show_pageData: any = ref();
+
+    let sort_pageData = ref([]);
 
     const activeButton = ref('');
     let search = ref();
 
 onMounted(() => {
     // 檢查url路徑 --- start
-    //console.log(toRaw(MenuItemsData.value));
+    console.log(toRaw(MenuItemsData.value));
     toRaw(MenuItemsData.value).forEach((item:any, index:any) => {
         if( item.category_url === category ) {
             CategoyData = toRaw(item);
-            //console.log(CategoyData);
+            console.log(CategoyData);
             DOM_ch_category.value.textContent = CategoyData.category_name;
             sub_CategoryData.value = CategoyData.sub_categories;
+
+            sub_CategoryData.value.forEach((item:any, index:any) => {
+                if(item.sub_url === router.params.subCategory) {
+                    sub_CategoryText.value = item.sub_name;
+                }
+            });
+
             url_corret.value = true;
         }
     });   
@@ -126,52 +121,32 @@ onMounted(() => {
         throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true });
     }
     // end --- 檢查url路徑
-});
 
+    let categorData = ref([]);
+    pageData = ref(toRaw(pageData.value));
+    if (pageData) {
+        pageData = pageData.value.filter(item => {
+            return item.sub_category === sub_CategoryText.value
+        });
+    }
+    else{
+        console.log("No data");
+    }
 
-    // [API]
-    // switch(category) {
-    //     case '好吃零食':
-    //         const { $foodData } = useNuxtApp();
-    //         const foodData: any = $foodData;
-    //         pageData = foodData;
-    //         break;
-    //     case '品牌玩具':
-    //         const { $toyData } = useNuxtApp();
-    //         const toyData: any = $toyData;
-    //         pageData = toyData;
-    //         break;
-    //     case '盲盒娃娃':
-    //         const { $dollData } = useNuxtApp();
-    //         const dollData: any = $dollData;
-    //         pageData = dollData;
-    //         break;
-    //     case '生活用品':
-    //         const { $supplyData } = useNuxtApp();
-    //         const supplyData: any = $supplyData;
-    //         pageData = supplyData;
-    //         break;
-    //     case '其他好物':
-    //         const { $otherData } = useNuxtApp();
-    //         const otherData: any = $otherData;
-    //         pageData = otherData;
-    //         break;            
+    for(let item:Object in pageData) {
+        categorData.value.push(pageData[item])
+    }
 
-    // };
-    //console.log(pageData);
+    pageData = categorData;
+});    
 
     const { data, refresh } = await useFetch(`https://isnmk.com/api/${category}`);
     pageData = toRaw(data.value);
-    //console.log(data.value);
-    show_pageData.value = pageData;
 
-
-    // 篩選按鈕變化 JS
-    const setActiveButton = (button:any) => {  
+    const setActiveButton = (button:any) => {
         activeButton.value = button;
     };
 
-    // --- 排序 function [規則] --- Start
     const SortByComplex = (a:any, b:any) => {
         let aComplex = (a.last_30days_sales * a.point);
         let bComplex = (b.last_30days_sales * b.point);
@@ -211,74 +186,37 @@ onMounted(() => {
         }        
         return a.point - b.point;
     }
-    // --- 排序 function [規則] --- End
+    //pageData = Object.entries(pageData);
+    for(let item:Object in pageData) {
+        sort_pageData.value.push(pageData[item])
+    }
 
-    const groupSize = 18;
-    const group_pageData = (group_data:any) => {
-        const result = [];
-        for (let i = 0; i < group_data.length; i += groupSize) {
-            result.push(group_data.slice(i, i + groupSize));
-        }
-        return result;
-    };
-    show_pageData.value = group_pageData(show_pageData.value);
-
+    pageData = sort_pageData;
+    //console.log(pageData);
 
     const sort_Complex = () => {
-        pageData.sort(SortByComplex);
-        show_pageData.value = group_pageData(pageData);
+        console.log(pageData);
+        pageData.value.sort(SortByComplex);
     }    
     const sort_Time = () => {
-        pageData.sort(SortByTime);
-        show_pageData.value = group_pageData(pageData);
+        pageData.value.sort(SortByTime);
+        //console.log(pageData.value);
     }    
     const sort_Hot = () => {
-        pageData.sort(SortByHot);
-        show_pageData.value = group_pageData(pageData);
+        pageData.value.sort(SortByHot);
+        //console.log(pageData.value);
     }
     const sort_Point_Height = () => {
-        pageData.sort(SortByPointHeight);
-        show_pageData.value = group_pageData(pageData);
+        pageData.value.sort(SortByPointHeight);
+        //console.log(pageData.value);
     }
     const sort_Point_Low = () => {
-        pageData.sort(SortByPointLow);
-        show_pageData.value = group_pageData(pageData);
-    }
-
-    // Swiper function
-    const onSwiperRenderBullet = (index:any, className:any) => {
-        return '<span class="' + className + '">' + (index + 1) + '</span>';
-    }
-    const onPaginationRender = () => {
-        window.scrollTo(0, 0);
+        console.log(toRaw(pageData));
+        pageData.value.sort(SortByPointLow);
     }
 </script>
 
 <style lang="scss">
-// [ Swiper Start ] 
-.swiper {
-    padding-bottom: 3.5rem;
-}
-
-.swiper-pagination-bullet {
-    color: rgba(0, 0, 0, .4);
-    opacity: 1;
-    background-color: transparent;
-    padding: 0;
-    min-width: 2.5rem;
-    text-align: center;
-    height: 1.875rem;
-    font-size: 1.25rem;
-    --swiper-pagination-bullet-horizontal-gap: .9375rem;
-    border-radius: 0;
-}
-
-.swiper-pagination-bullet-active {
-    color: #fff;
-    background: #ee4d2d;
-}
-// [ Swiper End ]
-
 .disabled-link {
   pointer-events: none;
 }
@@ -388,7 +326,6 @@ onMounted(() => {
 
             .control_options {
                 display: flex;
-                flex-wrap: wrap;
                 gap: .625rem;
                 margin-left: .625rem;
 
