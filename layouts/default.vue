@@ -296,7 +296,7 @@ const MenuItemsData: any = $MenuItemsData;
             }
         }
         .toolItem {
-            display: none !important;
+            //display: none !important;
             font-size: 1.5rem;
             background-color: rgba(200, 200, 200, 0.3);
             border-radius: 10px;

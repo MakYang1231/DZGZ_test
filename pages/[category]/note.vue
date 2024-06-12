@@ -44,11 +44,11 @@
             <div class="d-flex align-items-center justify-content-start control_bar">
                 <div class="control_label">篩選</div>
                 <div class="control_options">
-                    <button :class="{ active: activeButton === 'complex' }" @click="setActiveButton('complex'); sort_Complex();">綜合排名</button>
+                    <button :class="{ active: activeButton === 'complex' }" @click="setActiveButton('complex'); sort_Complex();">綜合</button>
                     <button :class="{ active: activeButton === 'time' }" @click="setActiveButton('time'); sort_Time();">最新</button>
-                    <button :class="{ active: activeButton === 'hot' }" @click="setActiveButton('hot'); sort_Hot();">最熱銷</button>
-                    <button :class="{ active: activeButton === 'point_height' }" @click="setActiveButton('point_height'); sort_Point_Height();">點數高</button>
-                    <button :class="{ active: activeButton === 'point_low' }" @click="setActiveButton('point_low'); sort_Point_Low();">點數低</button>
+                    <button :class="{ active: activeButton === 'hot' }" @click="setActiveButton('hot'); sort_Hot();">熱門</button>
+                    <button :class="{ active: activeButton === 'point_height' }" @click="setActiveButton('point_height'); sort_Point_Height();">價高</button>
+                    <button :class="{ active: activeButton === 'point_low' }" @click="setActiveButton('point_low'); sort_Point_Low();">價低</button>
                 </div>
             </div>
 

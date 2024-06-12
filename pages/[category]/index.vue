@@ -34,7 +34,7 @@
                 </NuxtLink>
             </div>
             <div class="page_subItem d-flex align-items-center justify-content-between flex-wrap">
-                <div class="subItem_text bg-light col-4 col-md-3" v-for="(sItem, sIndex) in sub_CategoryData" :key="sIndex">
+                <div class="subItem_text bg-light col-12 col-md-3" v-for="(sItem, sIndex) in sub_CategoryData" :key="sIndex">
                     <NuxtLink :to="`/${ category }/${ sItem.sub_url }`">
                         ${ sItem.sub_name }
                     </NuxtLink>
@@ -44,11 +44,11 @@
             <div class="d-flex align-items-center justify-content-start control_bar">
                 <div class="control_label">篩選</div>
                 <div class="control_options">
-                    <button :class="{ active: activeButton === 'complex' }" @click="setActiveButton('complex'); sort_Complex();">綜合排名</button>
+                    <button :class="{ active: activeButton === 'complex' }" @click="setActiveButton('complex'); sort_Complex();">綜合</button>
                     <button :class="{ active: activeButton === 'time' }" @click="setActiveButton('time'); sort_Time();">最新</button>
-                    <button :class="{ active: activeButton === 'hot' }" @click="setActiveButton('hot'); sort_Hot();">最熱銷</button>
-                    <button :class="{ active: activeButton === 'point_height' }" @click="setActiveButton('point_height'); sort_Point_Height();">點數高</button>
-                    <button :class="{ active: activeButton === 'point_low' }" @click="setActiveButton('point_low'); sort_Point_Low();">點數低</button>
+                    <button :class="{ active: activeButton === 'hot' }" @click="setActiveButton('hot'); sort_Hot();">熱門</button>
+                    <button :class="{ active: activeButton === 'point_height' }" @click="setActiveButton('point_height'); sort_Point_Height();">價高</button>
+                    <button :class="{ active: activeButton === 'point_low' }" @click="setActiveButton('point_low'); sort_Point_Low();">價低</button>
                 </div>
             </div>
 
@@ -105,7 +105,7 @@
     let pageData: any = ref();
     let show_pageData: any = ref();
 
-    const activeButton = ref('');
+    const activeButton = ref('complex');
     let search = ref();
 
 onMounted(() => {
@@ -244,6 +244,9 @@ onMounted(() => {
         pageData.sort(SortByPointLow);
         show_pageData.value = group_pageData(pageData);
     }
+
+    sort_Complex(); // 預設為綜合排名
+    
 
     // Swiper function
     const onSwiperRenderBullet = (index:any, className:any) => {
@@ -400,16 +403,17 @@ onMounted(() => {
                     justify-content: center;
                     box-sizing: border-box;
                     cursor: pointer;
-                    min-width: 5.625rem;
+                    min-width: 2.625rem;
                     outline: 0;
                     overflow: visible;
-                    padding: 0 .9375rem;
+                    padding: 0 .6rem;
                     text-transform: capitalize;
                     border: 0;
                     border-radius: 2px;
                     box-shadow: 0 1px 1px 0 rgba(0,0,0,.02);
                     height: 2.125rem;
                     line-height: 2.125rem;
+                    font-size: 14px;
                 }
                 .active {
                     color: #fff;
