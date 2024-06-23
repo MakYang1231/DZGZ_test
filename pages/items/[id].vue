@@ -3,7 +3,6 @@
         <div class="itemSwiperDiv" style="width: 510px">
             <Swiper
                 class="swiper_thumbs_main"
-                :autoHeight= true
                 :modules="[SwiperThumbs, SwiperEffectCreative]"
                 :thumbs="{ swiper: thumbsSwiper }"
                 :slides-per-view="1"
@@ -127,6 +126,12 @@
             border-radius: 5px;
         }
     }    
+}
+
+.swiper {
+    .swiper-wrapper {
+        align-items: center;
+    }
 }
 
 .infoMain {
