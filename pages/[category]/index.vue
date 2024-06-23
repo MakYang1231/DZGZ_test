@@ -36,6 +36,7 @@
             <div class="page_subItem d-flex align-items-center justify-content-between flex-wrap">
                 <div class="subItem_text bg-light col-12 col-md-3" v-for="(sItem, sIndex) in sub_CategoryData" :key="sIndex">
                     <NuxtLink :to="`/${ category }/${ sItem.sub_url }`">
+                        <BootstrapIcon class="mobile" name="chevron-right" />
                         ${ sItem.sub_name }
                     </NuxtLink>
                 </div>
@@ -68,7 +69,7 @@
                         >
                         <SwiperSlide class="d-flex align-items-baseline justify-content-between flex-wrap" v-for="(group, index) in show_pageData">
                             <li class="" v-for="(item, index) in group">
-                                <NuxtLink class="disabled-link" :to="{ path:`/`, hash:`` }">
+                                <NuxtLink class="disabled-links" :to="{ name:`items-id`, params: { id: item.item_code }, query: {category: category, itemCode: item.item_code}}">
                                     <NuxtImg class="lazyload" itemprop="image" :src="`${ item.picture_url }`" :data-src="`${ item.picture_url }`" />
                                 </NuxtLink>
                                 <div class="title">
@@ -257,7 +258,7 @@ onMounted(() => {
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 // [ Swiper Start ] 
 .swiper {
     padding-bottom: 3.5rem;
@@ -284,6 +285,10 @@ onMounted(() => {
 
 .disabled-link {
   pointer-events: none;
+}
+
+.mobile {
+    display: none;
 }
 
 .page_main {
@@ -397,6 +402,7 @@ onMounted(() => {
 
                 button {
                     background-color: #fff;
+                    color: #252526;
                     position: relative;
                     display: flex;
                     align-items: center;
@@ -485,6 +491,9 @@ onMounted(() => {
 }
 
 @media screen and (max-width: 767px) {
+    .mobile {
+        display: inline-block;
+    }
     .page_main {
         .div_page_left {
             display: none;
@@ -494,6 +503,16 @@ onMounted(() => {
                 ul {
                     li {
                         width: 49%;
+                    }
+                }
+            }
+            .page_subItem {
+                border: 1px solid #ccc;
+
+                .subItem_text {
+                    border-bottom: 1px solid #eee;
+                    a {
+                        font-size: 1rem;
                     }
                 }
             }

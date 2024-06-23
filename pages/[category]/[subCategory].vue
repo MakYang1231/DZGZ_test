@@ -36,6 +36,7 @@
             <div class="page_subItem d-flex align-items-center justify-content-between flex-wrap">
                 <div class="subItem_text bg-light col-12 col-md-3" v-for="(sItem, sIndex) in sub_CategoryData" :key="sIndex">
                     <NuxtLink :to="`/${ category }/${ sItem.sub_url }`">
+                        <BootstrapIcon class="mobile" name="chevron-right" />
                         ${ sItem.sub_name }
                     </NuxtLink>
                 </div>
@@ -276,7 +277,7 @@ onMounted(() => {
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 // [ Swiper Start ] 
 .swiper {
     padding-bottom: 3.5rem;
@@ -303,6 +304,10 @@ onMounted(() => {
 
 .disabled-link {
   pointer-events: none;
+}
+
+.mobile {
+    display: none;
 }
 
 .page_main {
@@ -503,6 +508,9 @@ onMounted(() => {
 }
 
 @media screen and (max-width: 767px) {
+    .mobile {
+        display: inline-block;
+    }
     .page_main {
         .div_page_left {
             display: none;
@@ -512,6 +520,16 @@ onMounted(() => {
                 ul {
                     li {
                         width: 49%;
+                    }
+                }
+            }
+            .page_subItem {
+                border: 1px solid #ccc;
+
+                .subItem_text {
+                    border-bottom: 1px solid #eee;
+                    a {
+                        font-size: 1rem;
                     }
                 }
             }
