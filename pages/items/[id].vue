@@ -134,7 +134,6 @@
         }
     };
 
-
     onMounted(() => {
         if (typeof window !== 'undefined') {
             window.addEventListener('resize', handleResize);
