@@ -78,6 +78,7 @@
                 :grab-cursor="true"
                 :loop="false"
             >
+            <BootstrapIcon name="arrow-left-circle-fill" class="icon prev_button" />
             <SwiperSlide class="d-flex align-items-baseline justify-content-between flex-wrap" v-for="(item, index) in thumbsData">
                 <div v-if="isVideo(item.url)" class="videoDiv position-relative">
                     <video :src="`${ item.url }`" muted :poster="`${ posterImage }`"></video>
@@ -90,6 +91,7 @@
                 
                 <NuxtImg v-else class="lazyload" itemprop="image" :src="`${ item.url }`" :data-src="`${ item.url }`" />   
             </SwiperSlide>
+            <BootstrapIcon name="arrow-right-circle-fill" class="icon prev_button" />
             </Swiper>                
         </div>
         <div class="itemInfoDiv">
@@ -193,6 +195,10 @@
 .swiper_thumbs_bottom {
     padding-top: 1rem;
 
+    .icon {
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
     .swiper-slide {
         cursor: pointer;
 

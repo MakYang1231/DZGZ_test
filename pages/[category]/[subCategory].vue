@@ -58,7 +58,7 @@
                     <ul class="d-flex align-items-baseline justify-content-between flex-wrap">
                         <Swiper
                             :speed=0
-                            :autoHeight= true
+                            :autoHeight="true"
                             :modules="[SwiperGrid, SwiperPagination]"
                             :slides-per-view="1"
                             :slides-per-group="1"
@@ -70,7 +70,7 @@
                         <SwiperSlide class="d-flex align-items-baseline justify-content-between flex-wrap" v-for="(group, index) in show_pageData">
                             <li class="" v-for="(item, index) in group">
                                 <NuxtLink class="disabled-links" :to="{ name:`items-id`, params: { id: item.item_code }, query: {category: category, itemCode: item.item_code}}">
-                                    <NuxtImg class="lazyload" itemprop="image" :src="`${ item.picture_url }`" :data-src="`${ item.picture_url }`" />
+                                    <img class="lazyload" itemprop="image" :src="`${ item.picture_url }`" :data-src="`${ item.picture_url }`" />
                                 </NuxtLink>
                                 <div class="title">
                                     ${ item.item_name } <span v-if="item.spec !== '' && item.spec !== '無'"> : ${ item.spec }</span>
@@ -281,6 +281,14 @@ onMounted(() => {
 // [ Swiper Start ] 
 :deep(.swiper) {
     padding-bottom: 5rem;
+
+    .swiper-wrapper {
+        max-width: 67vw;
+    }
+    .swiper-slide {
+        width: 67vw !important;
+        max-width: 67vw;
+    }
     .swiper-pagination-bullet {
         color: rgba(0, 0, 0, .4);
         opacity: 1;
@@ -312,6 +320,7 @@ onMounted(() => {
     margin-top: 2rem;
 
     .div_page_left {
+        max-width: 20vw;
         border: 1px solid #E6E6E6;
 
         .menu_title {
@@ -370,6 +379,7 @@ onMounted(() => {
     }
 
     .div_page_right {
+        max-width: 67vw;
         .page_header_breadcrumb {
             font-size: 1.5rem;
             text-align: left;
