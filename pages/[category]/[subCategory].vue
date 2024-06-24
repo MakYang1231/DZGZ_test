@@ -69,7 +69,7 @@
                         >
                         <SwiperSlide class="d-flex align-items-baseline justify-content-between flex-wrap" v-for="(group, index) in show_pageData">
                             <li class="" v-for="(item, index) in group">
-                                <NuxtLink class="disabled-link" :to="{ path:`/`, hash:`` }">
+                                <NuxtLink class="disabled-links" :to="{ name:`items-id`, params: { id: item.item_code }, query: {category: category, itemCode: item.item_code}}">
                                     <NuxtImg class="lazyload" itemprop="image" :src="`${ item.picture_url }`" :data-src="`${ item.picture_url }`" />
                                 </NuxtLink>
                                 <div class="title">
@@ -279,26 +279,24 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 // [ Swiper Start ] 
-.swiper {
-    padding-bottom: 3.5rem;
-}
-
-.swiper-pagination-bullet {
-    color: rgba(0, 0, 0, .4);
-    opacity: 1;
-    background-color: transparent;
-    padding: 0;
-    min-width: 2.5rem;
-    text-align: center;
-    height: 1.875rem;
-    font-size: 1.25rem;
-    --swiper-pagination-bullet-horizontal-gap: .9375rem;
-    border-radius: 0;
-}
-
-.swiper-pagination-bullet-active {
-    color: #fff;
-    background: #ee4d2d;
+:deep(.swiper) {
+    padding-bottom: 5rem;
+    .swiper-pagination-bullet {
+        color: rgba(0, 0, 0, .4);
+        opacity: 1;
+        background-color: transparent;
+        padding: 0;
+        min-width: 2.5rem;
+        text-align: center;
+        height: 1.875rem;
+        font-size: 1.25rem;
+        --swiper-pagination-bullet-horizontal-gap: .9375rem;
+        border-radius: 0;
+    }
+    .swiper-pagination-bullet-active {
+        color: #fff;
+        background: #ee4d2d;
+    }
 }
 // [ Swiper End ]
 

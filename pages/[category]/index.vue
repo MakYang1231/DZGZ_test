@@ -260,26 +260,24 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 // [ Swiper Start ] 
-.swiper {
-    padding-bottom: 3.5rem;
-}
-
-.swiper-pagination-bullet {
-    color: rgba(0, 0, 0, .4);
-    opacity: 1;
-    background-color: transparent;
-    padding: 0;
-    min-width: 2.5rem;
-    text-align: center;
-    height: 1.875rem;
-    font-size: 1.25rem;
-    --swiper-pagination-bullet-horizontal-gap: .9375rem;
-    border-radius: 0;
-}
-
-.swiper-pagination-bullet-active {
-    color: #fff;
-    background: #ee4d2d;
+:deep(.swiper) {
+    padding-bottom: 5rem;
+    .swiper-pagination-bullet {
+        color: rgba(0, 0, 0, .4);
+        opacity: 1;
+        background-color: transparent;
+        padding: 0;
+        min-width: 2.5rem;
+        text-align: center;
+        height: 1.875rem;
+        font-size: 1.25rem;
+        --swiper-pagination-bullet-horizontal-gap: .9375rem;
+        border-radius: 0;
+    }
+    .swiper-pagination-bullet-active {
+        color: #fff;
+        background: #ee4d2d;
+    }
 }
 // [ Swiper End ]
 

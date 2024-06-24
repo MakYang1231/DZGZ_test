@@ -183,7 +183,7 @@
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .swiper_thumbs_main {
     video {
         width: 100%;
