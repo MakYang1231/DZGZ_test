@@ -264,11 +264,11 @@ onMounted(() => {
     padding-bottom: 5rem;
 
     .swiper-wrapper {
-        max-width: 67vw;
+        max-width: 60vw;
     }
     .swiper-slide {
-        width: 67vw !important;
-        max-width: 67vw;
+        width: 60vw !important;
+        max-width: 60vw;
     }
     .swiper-pagination-bullet {
         color: rgba(0, 0, 0, .4);
@@ -499,6 +499,17 @@ onMounted(() => {
 }
 
 @media screen and (max-width: 767px) {
+    :deep(.swiper) {
+        padding-bottom: 10rem;
+        .swiper-wrapper {
+            max-width: 94vw;
+        }
+        .swiper-slide {
+            width: 94vw !important;
+            max-width: 94vw;
+        }
+    }  
+
     .mobile {
         display: inline-block;
     }
@@ -507,6 +518,7 @@ onMounted(() => {
             display: none;
         }
         .div_page_right {
+            max-width: 100vw;
             .page_itemBody {
                 ul {
                     li {
