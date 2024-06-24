@@ -283,11 +283,11 @@ onMounted(() => {
     padding-bottom: 5rem;
 
     .swiper-wrapper {
-        max-width: 60vw;
+        max-width: 59vw;
     }
     .swiper-slide {
-        width: 60vw !important;
-        max-width: 60vw;
+        width: 59vw !important;
+        max-width: 59vw;
     }
     .swiper-pagination-bullet {
         color: rgba(0, 0, 0, .4);
