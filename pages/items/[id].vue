@@ -79,7 +79,14 @@
                 :loop="false"
             >
             <SwiperSlide class="d-flex align-items-baseline justify-content-between flex-wrap" v-for="(item, index) in thumbsData">
-                <video v-if="isVideo(item.url)" :src="`${ item.url }`" muted></video>
+                <div v-if="isVideo(item.url)" class="videoDiv position-relative">
+                    <video :src="`${ item.url }`" muted :poster="`${ posterImage }`"></video>
+                    <div class="play-thumbs">
+                        <div class="youtube-play-button">
+                            <div class="play-icon"></div>
+                        </div>
+                    </div>
+                </div>
                 
                 <NuxtImg v-else class="lazyload" itemprop="image" :src="`${ item.url }`" :data-src="`${ item.url }`" />   
             </SwiperSlide>
@@ -123,6 +130,7 @@
     const ItemData = pageData.find(item => item.item_code === itemCode); // 根据需要修改条件
     const isVideo = (url) => /^https.*\.mp4$/i.test(url);
     let thumbsData = ref();
+    const posterImage = ref('');
 
     // 判斷視窗大小
     // 定义一个响应式变量来存储窗口宽度信息
@@ -133,7 +141,7 @@
             isMobile.value = window.innerWidth < 767;
         }
     };
-
+    
     onMounted(() => {
         if (typeof window !== 'undefined') {
             window.addEventListener('resize', handleResize);
@@ -142,6 +150,7 @@
 
 
         thumbsData.value = ItemData.product_picture_url_list;
+        posterImage.value = thumbsData.value[0].url;
         if (ItemData['product_video_url'] && ItemData['product_video_url'] !== '') { // 如果有影影片
             
             //產生一個影片物件
@@ -189,6 +198,41 @@
 
         video {
             width: 100%;
+            border-radius: 5px;
+        }
+        .play-thumbs {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%; 
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, .2);
+
+            .youtube-play-button {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 3rem;
+                height: 2rem;
+                background-color: #ff0000;
+                border-radius: 5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s;
+            }
+            .play-icon {
+                width: 0;
+                height: 0;
+                border-left: 10px solid #fff;
+                border-top: 6px solid transparent;
+                border-bottom: 6px solid transparent;
+            }
         }
         img {
             border-radius: 5px;
