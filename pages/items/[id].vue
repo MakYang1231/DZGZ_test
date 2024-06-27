@@ -46,7 +46,7 @@
         <div class="itemSwiperDiv" style="width: 510px">
             <Swiper
                 class="swiper_thumbs_main"
-                :modules="[SwiperThumbs, SwiperEffectCreative]"
+                :modules="[SwiperThumbs, SwiperEffectCreative, SwiperNavigation]"
                 :thumbs="{ swiper: thumbsSwiper }"
                 :slides-per-view="1"
                 :loop="false"
@@ -60,6 +60,11 @@
                         translate: ['100%', 0, 0],
                     },
                 }"
+                :navigation="{ 
+                    enabled: true,
+                    prevEl: '.prev_button',
+                    nextEl: '.next_button'
+                }"                 
             >
             <SwiperSlide class="d-flex align-items-baseline justify-content-between flex-wrap" v-for="(item, index) in thumbsData">
                 <video v-if="isVideo(item.url)" :src="`${ item.url }`" controls loop muted autoplay></video>
@@ -69,16 +74,14 @@
             </Swiper>
             <Swiper
                 class="swiper_thumbs_bottom"
-                :autoHeight= true
-                :modules="[SwiperThumbs]"
+                :autoHeight="true"
+                :modules="[SwiperThumbs, SwiperNavigation]"
                 @swiper="setThumbsSwiper"
                 :watch-slides-progress="true"
                 :slides-per-view="4"
                 :space-between="40"
-                :grab-cursor="true"
-                :loop="false"
+                :loop="false"               
             >
-            <BootstrapIcon name="arrow-left-circle-fill" class="icon prev_button" />
             <SwiperSlide class="d-flex align-items-baseline justify-content-between flex-wrap" v-for="(item, index) in thumbsData">
                 <div v-if="isVideo(item.url)" class="videoDiv position-relative">
                     <video :src="`${ item.url }`" muted :poster="`${ posterImage }`"></video>
@@ -91,8 +94,9 @@
                 
                 <NuxtImg v-else class="lazyload" itemprop="image" :src="`${ item.url }`" :data-src="`${ item.url }`" />   
             </SwiperSlide>
-            <BootstrapIcon name="arrow-right-circle-fill" class="icon prev_button" />
-            </Swiper>                
+            </Swiper>       
+            <BootstrapIcon name="arrow-left-circle-fill" class="icon prev_button" />
+            <BootstrapIcon name="arrow-right-circle-fill" class="icon next_button" />         
         </div>
         <div class="itemInfoDiv">
             <div class="tags d-flex">
@@ -186,66 +190,100 @@
 </script>
 
 <style lang="scss" scoped>
-.swiper_thumbs_main {
-    video {
-        width: 100%;
-    }
-}
-
-.swiper_thumbs_bottom {
-    padding-top: 1rem;
-
-    .icon {
-        font-size: 1.5rem;
-        cursor: pointer;
-    }
-    .swiper-slide {
-        cursor: pointer;
-
+.itemSwiperDiv{
+    position: relative;
+    .swiper_thumbs_main {
+        margin: 0 2rem;
         video {
             width: 100%;
-            border-radius: 5px;
         }
-        .play-thumbs {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%; 
-            cursor: pointer;
-            background-color: rgba(0, 0, 0, .2);
+    .swiper {
+        .swiper-wrapper {
+            display: flex;
+            align-items: center;
+        }
+    }    
+    }
 
-            .youtube-play-button {
+    .swiper_thumbs_bottom {
+        margin: 1rem 2rem 0rem 2rem;
+
+        .icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .swiper-slide {
+            cursor: pointer;
+            opacity: .5;
+
+            video {
+                width: 100%;
+                border-radius: 5px;
+            }
+            .play-thumbs {
                 position: absolute;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                width: 3rem;
-                height: 2rem;
-                background-color: #ff0000;
-                border-radius: 5px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                width: 100%;
+                height: 100%; 
                 cursor: pointer;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                transition: transform 0.3s;
+                background-color: rgba(0, 0, 0, .2);
+                border-radius: 5px;
+
+                .youtube-play-button {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 3rem;
+                    height: 2rem;
+                    background-color: #ff0000;
+                    border-radius: 5px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                    transition: transform 0.3s;
+                }
+                .play-icon {
+                    width: 0;
+                    height: 0;
+                    border-left: 10px solid #fff;
+                    border-top: 6px solid transparent;
+                    border-bottom: 6px solid transparent;
+                }
             }
-            .play-icon {
-                width: 0;
-                height: 0;
-                border-left: 10px solid #fff;
-                border-top: 6px solid transparent;
-                border-bottom: 6px solid transparent;
+            img {
+                border-radius: 5px;
             }
-        }
-        img {
+        }       
+        .swiper-slide-thumb-active {
+            opacity: 1;
+            border: 2px solid #000;
             border-radius: 5px;
-        }
+        } 
+    }
+    .icon {
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+    .prev_button {
+        position: absolute;
+        left: 0rem;
+        bottom: 2rem;
+    }
+    .next_button {
+        position: absolute;
+        right: 0rem;
+        bottom: 2rem;
+    }
+    .swiper-button-disabled {
+        color: #c0c0c0;
+        cursor: not-allowed;
     }    
 }
-
 .swiper {
     .swiper-wrapper {
         align-items: center;
