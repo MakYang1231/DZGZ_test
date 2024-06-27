@@ -196,13 +196,7 @@
         margin: 0 2rem;
         video {
             width: 100%;
-        }
-    .swiper {
-        .swiper-wrapper {
-            display: flex;
-            align-items: center;
-        }
-    }    
+        }   
     }
 
     .swiper_thumbs_bottom {
@@ -284,8 +278,9 @@
         cursor: not-allowed;
     }    
 }
-.swiper {
+:deep(.swiper) {
     .swiper-wrapper {
+        display: flex;
         align-items: center;
     }
 }
