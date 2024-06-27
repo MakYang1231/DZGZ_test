@@ -336,6 +336,9 @@
 
 .itemSwiperDiv {
     width: 100%;
+    .swiper_thumbs_main {
+        margin: 0rem;  
+    }    
 }
 
 .detailImageDiv {
