@@ -108,6 +108,7 @@
                 }
 
                 .midInfo {
+                    margin-left: 1rem;
                     .name {
                         font-size: 16px;
                     }
