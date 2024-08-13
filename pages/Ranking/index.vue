@@ -51,7 +51,7 @@
         background-attachment: fixed;
 
         .list {
-            padding-top: 2rem;
+            padding-top: 1svh;
             width: 95%;
             margin: 0 auto;
             border-radius: 5px;

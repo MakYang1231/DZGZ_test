@@ -172,16 +172,19 @@ const MenuItemsData: any = $MenuItemsData;
 
         .menu_button {
             display: none;
-            font-size: 5svh;
+            font-size: 3svh;
         }
         .logo {
-            width: 5svh;
+            width: 7svh;
             transition: all 0.3s ease-in-out;
         }
         .main_item {
+            flex-basis: 70%;
             .item_top {
                 transition: all 0.3s ease-in-out;
                 font-family: "ＫＯさきがけ龍爪Ｍ";
+                letter-spacing: 1rem;
+                font-size: 1.1rem;
             }
             .item_top {
                 display: block !important;
@@ -395,13 +398,17 @@ const MenuItemsData: any = $MenuItemsData;
         display: block;
         .Head_content {
             .logo{
-                width: 5svh;
+                width: 7svh;
             }
             .menu_button {
                 display: block;
             }
             .main_item {
-                display: block;
+                display: block !important;
+
+                .item_top {
+                    letter-spacing: .5rem;
+                }
             }
         }
     }
