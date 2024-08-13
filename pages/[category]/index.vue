@@ -1,4 +1,5 @@
 <template>
+    <NuxtLayout name="default">
     <div class="page_main container d-flex justify-content-between">
         <div class="div_page_left col-md-2 bg-light">
             <div class="menu_title">
@@ -87,6 +88,7 @@
             </div>  
         </div>
     </div>
+</NuxtLayout>
 </template>
 
 <script setup lang="ts">

@@ -1,15 +1,17 @@
 <template>
-    <div class="main" style="height: 2000px;">
-        <div class="video container-fluid">
-            <div class="videoContent">
-                <!-- <video playsinline loop autoplay muted src="/video/video_0.mp4"></video> -->
-            </div>
-            <div class="imageDiv">
-                <img src="/images/main/1037088_0.jpg" alt="">
-                <img src="/images/main/1037089_0.jpg" alt="">
+    <NuxtLayout name="default">
+        <div class="main" style="height: 2000px;">
+            <div class="video container-fluid">
+                <div class="videoContent">
+                    <!-- <video playsinline loop autoplay muted src="/video/video_0.mp4"></video> -->
+                </div>
+                <div class="imageDiv">
+                    <img src="/images/main/1037088_0.jpg" alt="">
+                    <img src="/images/main/1037089_0.jpg" alt="">
+                </div>
             </div>
         </div>
-    </div>
+    </NuxtLayout>    
 </template>
 
 <script setup lang="ts">

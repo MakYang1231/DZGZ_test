@@ -1,4 +1,5 @@
 <template>
+    <NuxtLayout name="default">
     <div v-if="isMobile" class="infoMain container mt-2 d-flex flex-wrap justify-content-center">
         <div class="itemInfoDiv">
             <div class="tags d-flex">
@@ -122,6 +123,7 @@
             <img :src="`${ image.url }`" :data-src="`${ image.url }`">
         </div>
     </div>
+</NuxtLayout>
 </template>
 
 <script setup lang="ts">
